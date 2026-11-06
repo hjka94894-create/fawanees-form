@@ -119,7 +119,6 @@
         .btn-whatsapp { background-color: #25d366; }
         .btn-whatsapp:hover { background-color: #1ebe5d; }
 
-        /* التوقيع في الأسفل بالإنجليزية */
         .footer-signature {
             text-align: center;
             margin-top: 25px;
@@ -194,9 +193,9 @@
             </div>
         </fieldset>
 
-        <!-- 2. بيانات السكن والتواصل -->
+        <!-- 2. بيانات السكن والتواصل واختيار المشرف -->
         <fieldset>
-            <legend>2. بيانات السكن والتواصل</legend>
+            <legend>2. بيانات السكن والتواصل وإرسال المشرف</legend>
             <div class="form-row">
                 <div class="form-group">
                     <label>الولاية:</label>
@@ -207,8 +206,11 @@
                     <input type="text" id="locality">
                 </div>
                 <div class="form-group">
-                    <label>الحي:</label>
-                    <input type="text" id="district">
+                    <label>اختر المشرف / المنطقة:</label>
+                    <select id="supervisorSelect">
+                        <option value="249119089746">مشرف السليم (0119089746)</option>
+                        <option value="249124037264">مشرف دنقلا (0124037264)</option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">
@@ -323,7 +325,7 @@
             { label: "النوع: ", val: document.getElementById('gender').value },
             { label: "الحالة الاجتماعية: ", val: document.getElementById('socialStatus').value },
             { label: "الرقم الوطني: ", val: document.getElementById('nationalId').value },
-            { label: "الولاية / المحلية / الحي: ", val: `${document.getElementById('state').value} - ${document.getElementById('locality').value} - ${document.getElementById('district').value}` },
+            { label: "الولاية / المحلية / الحي: ", val: `${document.getElementById('state').value} - ${document.getElementById('locality').value}` },
             { label: "رقم الهاتف: ", val: document.getElementById('phone').value },
             { label: "واتساب: ", val: document.getElementById('whatsapp').value },
             { label: "المؤهل والتخصص: ", val: `${document.getElementById('qualification').value} (${document.getElementById('specialization').value})` },
@@ -337,7 +339,6 @@
             y += 10;
         });
 
-        // إضافة التوقيع في ملف الـ PDF باللغة الإنجليزية
         y += 10;
         doc.setFontSize(10);
         doc.setTextColor(18, 53, 31);
@@ -352,19 +353,22 @@
         const phone = document.getElementById('phone').value;
         const locality = document.getElementById('locality').value;
         const profession = document.getElementById('profession').value;
+        const supervisorSelect = document.getElementById('supervisorSelect');
+        
+        const supervisorPhone = supervisorSelect.value;
+        const supervisorName = supervisorSelect.options[supervisorSelect.selectedIndex].text;
 
         if(!name || !phone) {
             alert("الرجاء ملء الاسم ورقم الهاتف على الأقل قبل الإرسال.");
             return;
         }
 
-        const supervisorPhone = "249913270219";
-
         const message = `*استمارة طلب عضوية - فوانيس الخير*%0A` +
                         `👤 الاسم: ${name}%0A` +
                         `📱 الهاتف: ${phone}%0A` +
                         `📍 المحلية: ${locality}%0A` +
                         `💼 المهنة: ${profession}%0A` +
+                        `🎯 المرسل إليه: ${supervisorName}%0A` +
                         `---%0A*تم التقديم عبر النظام التقني*`;
 
         window.open(`https://wa.me/${supervisorPhone}?text=${message}`, '_blank');
