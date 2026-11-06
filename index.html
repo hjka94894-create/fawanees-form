@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منظمة فوانيس الخير - استمارة طلب عضوية</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #0d2315;
+            margin: 0;
+            padding: 15px;
+            color: #2c3e50;
+        }
+        .form-container {
+            max-width: 750px;
+            background: #fdfbf7;
+            margin: 0 auto;
+            padding: 25px;
+            border-radius: 4px;
+            border: 4px solid #c5a059;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .form-container::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid #c5a059;
+            pointer-events: none;
+        }
+        .header {
+            text-align: center;
+            background-color: #12351f;
+            color: #fdfbf7;
+            padding: 18px;
+            border: 2px solid #c5a059;
+            margin-bottom: 20px;
+        }
+        .header h2 { margin: 0; font-size: 24px; color: #fdfbf7; }
+        .header p { margin: 5px 0 0; font-size: 14px; color: #d4af37; }
+        
+        fieldset {
+            border: 1px solid #c5a059;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #ffffff;
+        }
+        legend {
+            background-color: #12351f;
+            color: #d4af37;
+            padding: 5px 12px;
+            font-size: 13px;
+            border: 1px solid #c5a059;
+            font-weight: bold;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 220px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #12351f;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #c5a059;
+            border-radius: 3px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #fffdf9;
+        }
+        .rules-box {
+            font-size: 12px;
+            background: #f4f8f4;
+            padding: 10px;
+            border-right: 4px solid #12351f;
+            border: 1px solid #c5a059;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .rules-box ol { margin: 0; padding-right: 20px; }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+        }
+        .btn-pdf { background-color: #12351f; border: 1px solid #c5a059; }
+        .btn-pdf:hover { background-color: #1b4d31; }
+        
+        .btn-whatsapp { background-color: #25d366; }
+        .btn-whatsapp:hover { background-color: #1ebe5d; }
+
+        /* التوقيع في الأسفل بالإنجليزية */
+        .footer-signature {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed #c5a059;
+            font-size: 13px;
+            color: #12351f;
+        }
+        .footer-signature .dev-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: #12351f;
+            margin-bottom: 4px;
+        }
+        .footer-signature .dev-name-en {
+            font-style: italic;
+            color: #333;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .footer-signature .dev-contact {
+            color: #c5a059;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .form-container { border: none; box-shadow: none; padding: 0; }
+            .btn-container { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="header">
+        <h2>منظمة فوانيس الخير</h2>
+        <p>نكن أينما كانت الحوجة | استمارة طلب عضوية</p>
+    </div>
+
+    <form id="charityForm">
+        <!-- 1. البيانات الشخصية -->
+        <fieldset>
+            <legend>1. البيانات الشخصية</legend>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>الاسم الكامل رباعياً:</label>
+                    <input type="text" id="fullName" required placeholder="ادخل الاسم رباعياً">
+                </div>
+                <div class="form-group">
+                    <label>تاريخ الميلاد:</label>
+                    <input type="date" id="birthDate">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>النوع:</label>
+                    <select id="gender">
+                        <option value="ذكر">ذكر</option>
+                        <option value="أنثى">أنثى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>الحالة الاجتماعية:</label>
+                    <input type="text" id="socialStatus" placeholder="أعزب/متزوج">
+                </div>
+                <div class="form-group">
+                    <label>الرقم الوطني:</label>
+                    <input type="text" id="nationalId">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 2. بيانات السكن والتواصل -->
+        <fieldset>
+            <legend>2. بيانات السكن والتواصل</legend>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>الولاية:</label>
+                    <input type="text" id="state" value="الولاية الشمالية">
+                </div>
+                <div class="form-group">
+                    <label>المحلية:</label>
+                    <input type="text" id="locality">
+                </div>
+                <div class="form-group">
+                    <label>الحي:</label>
+                    <input type="text" id="district">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>رقم الهاتف:</label>
+                    <input type="tel" id="phone" required placeholder="09xxxxxxxx">
+                </div>
+                <div class="form-group">
+                    <label>واتساب:</label>
+                    <input type="tel" id="whatsapp">
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني:</label>
+                    <input type="email" id="email">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 3. المؤهل العلمي والمهني -->
+        <fieldset>
+            <legend>3. المؤهل العلمي والمهني</legend>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>المؤهل:</label>
+                    <input type="text" id="qualification">
+                </div>
+                <div class="form-group">
+                    <label>التخصص:</label>
+                    <input type="text" id="specialization">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>المهنة:</label>
+                    <input type="text" id="profession">
+                </div>
+                <div class="form-group">
+                    <label>جهة العمل:</label>
+                    <input type="text" id="workplace">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 4. مهاراتك -->
+        <fieldset>
+            <legend>4. مهاراتك</legend>
+            <div class="form-group">
+                <label>اذكر أبرز مهاراتك التي تفيد المنظمة:</label>
+                <textarea id="skills" rows="2" placeholder="تصميم، برمجة، إدارية، أعمال حرة..."></textarea>
+            </div>
+        </fieldset>
+
+        <!-- 5. ضوابط العضوية -->
+        <div class="rules-box">
+            <strong>5. ضوابط العضوية - مهم جداً:</strong>
+            <ol>
+                <li>الالتزام بالنظام الأساسي ولوائح المنظمة.</li>
+                <li>الالتزام بقيم المنظمة وأهدافها الإنسانية.</li>
+                <li>المشاركة الفعالة في الأنشطة ولاجتماعات.</li>
+                <li>الحفاظ على سرية معلومات المنظمة والمستفيدين.</li>
+                <li>عدم استخدام اسم المنظمة أو شعارها لأي غرض شخصي أو أمانة.</li>
+            </ol>
+        </div>
+
+        <!-- 6. التعهد -->
+        <fieldset>
+            <legend>6. ميثاق الفانوس - التعهد</legend>
+            <label>
+                <input type="checkbox" id="pledge" required> أتعهد بالالتزام بضوابط العضوية أعلاه.
+            </label>
+        </fieldset>
+    </form>
+
+    <!-- الأزرار -->
+    <div class="btn-container">
+        <button type="button" class="btn btn-pdf" onclick="generatePDF()">📥 حفظ الاستمارة كـ PDF</button>
+        <button type="button" class="btn btn-whatsapp" onclick="sendToSupervisor()">💬 إرسال للمشرف واتساب</button>
+    </div>
+
+    <!-- التوقيع في الأسفل -->
+    <div class="footer-signature">
+        <div class="dev-title">Programmer & Cybersecurity Engineer</div>
+        <div class="dev-name-en">Abduldaim Mohammed</div>
+        <div class="dev-contact">رقم التواصل مع المبرمج: 0116752390</div>
+    </div>
+</div>
+
+<script>
+    function generatePDF() {
+        const name = document.getElementById('fullName').value;
+        const phone = document.getElementById('phone').value;
+
+        if(!name || !phone) {
+            alert("الرجاء إدخال (الاسم الكامل) و(رقم الهاتف) كحد أدنى.");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text("Lanterns of Goodness - Membership Form", 105, 15, { align: "center" });
+        doc.text("منظمة فوانيس الخير - استمارة طلب عضوية", 105, 23, { align: "center" });
+
+        doc.setFontSize(11);
+        let y = 35;
+
+        const fields = [
+            { label: "الاسم الكامل: ", val: document.getElementById('fullName').value },
+            { label: "تاريخ الميلاد: ", val: document.getElementById('birthDate').value },
+            { label: "النوع: ", val: document.getElementById('gender').value },
+            { label: "الحالة الاجتماعية: ", val: document.getElementById('socialStatus').value },
+            { label: "الرقم الوطني: ", val: document.getElementById('nationalId').value },
+            { label: "الولاية / المحلية / الحي: ", val: `${document.getElementById('state').value} - ${document.getElementById('locality').value} - ${document.getElementById('district').value}` },
+            { label: "رقم الهاتف: ", val: document.getElementById('phone').value },
+            { label: "واتساب: ", val: document.getElementById('whatsapp').value },
+            { label: "المؤهل والتخصص: ", val: `${document.getElementById('qualification').value} (${document.getElementById('specialization').value})` },
+            { label: "المهنة / جهة العمل: ", val: `${document.getElementById('profession').value} - ${document.getElementById('workplace').value}` },
+            { label: "المهارات: ", val: document.getElementById('skills').value }
+        ];
+
+        fields.forEach(item => {
+            if(y > 280) { doc.add_page(); y = 20; }
+            doc.text(`${item.label} ${item.val}`, 15, y);
+            y += 10;
+        });
+
+        // إضافة التوقيع في ملف الـ PDF باللغة الإنجليزية
+        y += 10;
+        doc.setFontSize(10);
+        doc.setTextColor(18, 53, 31);
+        doc.text("Programmer & Cybersecurity Engineer - Abduldaim Mohammed", 105, y, { align: "center" });
+        doc.text("Contact: 0116752390", 105, y + 6, { align: "center" });
+
+        doc.save("Lanterns_Membership_Form.pdf");
+    }
+
+    function sendToSupervisor() {
+        const name = document.getElementById('fullName').value;
+        const phone = document.getElementById('phone').value;
+        const locality = document.getElementById('locality').value;
+        const profession = document.getElementById('profession').value;
+
+        if(!name || !phone) {
+            alert("الرجاء ملء الاسم ورقم الهاتف على الأقل قبل الإرسال.");
+            return;
+        }
+
+        const supervisorPhone = "249913270219";
+
+        const message = `*استمارة طلب عضوية - فوانيس الخير*%0A` +
+                        `👤 الاسم: ${name}%0A` +
+                        `📱 الهاتف: ${phone}%0A` +
+                        `📍 المحلية: ${locality}%0A` +
+                        `💼 المهنة: ${profession}%0A` +
+                        `---%0A*تم التقديم عبر النظام التقني*`;
+
+        window.open(`https://wa.me/${supervisorPhone}?text=${message}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
