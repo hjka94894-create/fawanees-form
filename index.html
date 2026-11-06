@@ -207,7 +207,8 @@
                 </div>
                 <div class="form-group">
                     <label>اختر المشرف / المنطقة:</label>
-                    <select id="supervisorSelect">
+                    <select id="supervisorSelect" required>
+                        <option value="">-- اختر المنطقة / المشرف --</option>
                         <option value="249119089746">مشرف السليم (0119089746)</option>
                         <option value="249124037264">مشرف دنقلا (0124037264)</option>
                     </select>
@@ -357,6 +358,11 @@
         
         const supervisorPhone = supervisorSelect.value;
         const supervisorName = supervisorSelect.options[supervisorSelect.selectedIndex].text;
+
+        if(!supervisorPhone) {
+            alert("الرجاء اختيار المشرف / المنطقة من القائمة أولاً!");
+            return;
+        }
 
         if(!name || !phone) {
             alert("الرجاء ملء الاسم ورقم الهاتف على الأقل قبل الإرسال.");
